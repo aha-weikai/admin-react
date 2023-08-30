@@ -1,24 +1,30 @@
-import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
+import { isArray, isFunction } from "@/utils";
+import axios, { AxiosInstance, CreateAxiosDefaults,AxiosInterceptorOptions } from "axios";
 
 const defaultOptions: CreateAxiosDefaults<any> = {};
 
-class Http {
-  private httpInstance: AxiosInstance;
-  constructor(options: CreateAxiosDefaults<any>) {
-    // const ;
-    this.httpInstance = axios.create();
+const http = axios.create({});
+
+class Axios {
+  private instance: AxiosInstance;
+  constructor() {
+    this.instance = axios.create({});
+    this.instance.interceptors.request.use();
   }
 
-  get() {
-    // this.httpInstance;
+  getInstance() {
+    return this.instance;
+  }
+
+  ((value: V) => V | Promise<V>) | null,
+  ((error: any) => any) | null,
+  AxiosInterceptorOptions
+  
+  setupInterceptors({ request: [][], response }): void {
+    // if (isArray(request)) {
+    //   for (const interceptor of request) {
+    //     this.instance.interceptors.request.use();
+    //   }
+    // } else if (isFunction(request)) this.instance.interceptors.request.use();
   }
 }
-
-// options
-// interceptor
-// customOptions
-const http = new Http({
-  baseURL: "http://localhost:3000/api",
-  url: "/user",
-  timeout: 20 * 1000,
-});

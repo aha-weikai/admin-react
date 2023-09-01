@@ -1,10 +1,6 @@
-import axios, { AxiosInstance, CreateAxiosDefaults, InternalAxiosRequestConfig } from "axios";
-import { SetupInterceptorArgs, XAxiosInterceptorOptions } from "./types";
-import { is2DArrays, isArray } from "@/utils";
-
-const defaultOptions: CreateAxiosDefaults<any> = {};
-
-const http = axios.create({});
+import { is2DArrays } from "@/utils";
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import { SetupInterceptorArgs } from "./types";
 
 export class Axios {
   private instance: AxiosInstance;
@@ -61,3 +57,14 @@ export class Axios {
 // AxiosInterceptorOptions 的runWhen 是通过处理config，返回boolean，决定是否放入interceptor
 // AxiosInterceptorOptions 的synchronous(false) 是使axios.request 时，request中处理请求拦截器时候，处理为promise，promise队列为[请求拦截器promise1，请求拦截器promise2，请求，响应拦截器promise1，响应拦截器promise2]
 // synchronous(default:true) 同步处理请求拦截器，返回的promise队列为[请求，响应拦截器promise1，响应拦截器promise2]
+
+// 哪些网络请求情况存在着竞态的问题？
+// tab页切换，且是同一个接口，使用同一个变量接收。
+// 报表也存在类似问题
+// 如何封装取消请求，通过将需要取消的请求塞入一个map中，在拦截器中进行处理。如果需要取消，通过封装抽象的取消功能，取消。
+
+// 重复请求
+// 只取第一次。
+// 直接在请求拦截器中reject掉
+
+// 大文件分片上传

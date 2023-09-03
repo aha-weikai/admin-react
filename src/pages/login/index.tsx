@@ -1,23 +1,12 @@
-import axios from "axios";
+import { http } from "@/plugins/axios";
 
 type PublicKey = ArrayBuffer;
 
 const Login = () => {
-  const controller = new AbortController();
-  axios.interceptors.request.use(function () {
-    throw new Error("取消重复请求");
-  });
-  console.log(controller.signal);
   const login = () => {
-    axios
-      .get<PublicKey>("http://localhost:3000/api/auth/public_key", {
-        signal: controller.signal,
-      })
-      .then(res => {
-        console.log(res);
-      });
-    controller.abort();
-    console.log(controller.signal);
+    http.get("/auth/public_key").then(res => {
+      console.log("%cindex.tsx line:8 res", "color: #007acc;", res);
+    });
   };
   return <div onClick={() => login()}>登录</div>;
 };

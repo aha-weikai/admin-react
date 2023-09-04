@@ -1,7 +1,7 @@
-import { is2DArrays, isArray } from "@/utils";
+import { arrayIsNotHave, is2DArrays, isArray } from "@/utils";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { InterceptorManager } from "./interceptorManager";
-import { SetupInterceptorArgs } from "./types";
+import { SetupInterceptorArgs, XAxiosInterceptorOptions } from "./types";
 
 type InterceptorType = "request" | "response";
 
@@ -24,13 +24,14 @@ export class Axios {
     let key: keyof SetupInterceptorArgs;
     for (key in interceptors) {
       if (is2DArrays(interceptors[key])) {
-        let interceptor: SetupInterceptorArgs[InterceptorType];
-        for (interceptor of interceptors[key]) {
-          const interceptorNum = this.instance.interceptors.request.use(...(interceptor as []));
+        const interceptorArr = interceptors[key] as XAxiosInterceptorOptions<any>[];
+        for (const interceptor of interceptorArr) {
+          const interceptorNum = this.instance.interceptors[key].use(...interceptor);
           this.saveInterceptor(key, interceptor, interceptorNum);
         }
       } else {
-        const interceptorNum = this.instance.interceptors[key].use(...interceptors[key]);
+        const interceptor = interceptors[key] as XAxiosInterceptorOptions<any>;
+        const interceptorNum = this.instance.interceptors[key].use(...interceptor);
         this.saveInterceptor(key, interceptors[key], interceptorNum);
       }
     }
@@ -44,7 +45,11 @@ export class Axios {
     }
   }
   deleteInterceptor(type: InterceptorType, interceptor: any[]) {
-    if (this.requestInterceptorManager.has(interceptor)) this.requestInterceptorManager.delete(interceptor);
+    if (type === "request") {
+      this.requestInterceptorManager.delete(interceptor);
+    } else {
+      this.responseInterceptorManager.delete(interceptor);
+    }
   }
   clearInterceptor(type?: InterceptorType) {
     if (type === "request") {

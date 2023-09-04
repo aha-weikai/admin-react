@@ -1,7 +1,6 @@
 import { HTTP_BASE_URL } from "@/config";
 import { Axios } from "./request";
-
-
+import { dealWithRepeatableReq, dealWithToken } from "./interceptors";
 
 export const http = new Axios(
   {
@@ -10,15 +9,8 @@ export const http = new Axios(
   },
   {
     request: [
-      [
-        function dealWithToken(config) {
-          console.log(config);
-          return config;
-        },
-        function dealWithTokenErr(err) {
-          console.log(err);
-        },
-      ],
+      [dealWithToken, null],
+      [dealWithRepeatableReq, null],
     ],
     response: [],
   }

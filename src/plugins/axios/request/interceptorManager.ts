@@ -5,11 +5,11 @@ export class InterceptorManager {
   }
 
   set(key: any[], value: number) {
-    this.store.set(key, value);
+    return this.store.set(key, value);
   }
 
   delete(key: any[]) {
-    this.store.delete(key);
+    return this.store.delete(key);
   }
 
   clear() {
@@ -17,7 +17,6 @@ export class InterceptorManager {
   }
 
   has(key: any[]) {
-    this.store.forEach;
     return this.store.has(key);
   }
 }

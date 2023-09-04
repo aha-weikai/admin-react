@@ -9,6 +9,7 @@ export const Page = styled.div`
     .login-card {
       height: 20vh;
       background: lightblue;
+      /* border-radius: ; */
     }
   }
 `;

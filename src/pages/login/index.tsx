@@ -1,4 +1,6 @@
 import { http } from "@/plugins/axios";
+import { Button } from "antd";
+import { Page } from "./css";
 
 type PublicKey = ArrayBuffer;
 
@@ -8,7 +10,16 @@ const Login = () => {
       console.log("%cindex.tsx line:8 res", "color: #007acc;", res);
     });
   };
-  return <div onClick={() => login()}>登录</div>;
+  return (
+    <Page>
+      <div className="left">
+        <div className="login-card " onClick={() => login()}>
+          <Button>登录</Button>
+        </div>
+      </div>
+      <div className="right"></div>
+    </Page>
+  );
 };
 
 export default Login;

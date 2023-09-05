@@ -31,6 +31,8 @@ const loginRules: Record<string, Rule[]> = {
   captcha: [{ required: true, message: "请输入验证码！" }],
 };
 
+console.log(Object.entries(loginRules));
+
 const Login = () => {
   const login = () => {
     http.get("/auth/public_key").then(res => {
@@ -55,13 +57,11 @@ const Login = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item<FieldType> label="account" name="account" rules={[{ required: true, message: "请输入" }]}>
-              <Input />
-            </Form.Item>
-
-            <Form.Item<FieldType> label="Password" name="password" rules={[{ required: true, message: "Please input your password!" }]}>
-              <Input.Password />
-            </Form.Item>
+            {Object.entries(loginRules).map(([key, rules]) => (
+              <Form.Item label={key} name={key} rules={rules} key={key}>
+                {key === "password" ? <Input.Password /> : <Input />}
+              </Form.Item>
+            ))}
 
             <Form.Item<FieldType> name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
               <Checkbox>Remember me</Checkbox>

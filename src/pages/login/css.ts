@@ -5,11 +5,10 @@ export const Page = styled.div`
   height: 100vh;
   display: flex;
 
-  .left {
-    .login-card {
-      height: 20vh;
-      background: lightblue;
-      /* border-radius: ; */
-    }
+  .login-card {
+    background: #fff;
+    border-radius: 10px;
+    width: 400px;
+    padding: 20px 40px;
   }
 `;

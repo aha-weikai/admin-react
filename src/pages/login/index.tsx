@@ -19,6 +19,17 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
       { required: true, message: "请输入账号！" },
       { max: 20, message: "账号最长为20个字母" },
       { min: 6, message: "账号最短为6个字母" },
+      ({ getFieldValue }) => {
+        return {
+          validator(_, value) {
+            console.log("%cindex.tsx line:27 ", "color: #007acc;", value);
+            if (!value || getFieldValue("password") === value) {
+              return Promise.resolve();
+            }
+            return Promise.reject(new Error("The new password that you entered do not match!"));
+          },
+        };
+      },
     ],
     prefix: <User theme="outline" size="20" fill="#333" />,
   },

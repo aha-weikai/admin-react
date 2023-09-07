@@ -22,7 +22,6 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
       ({ getFieldValue }) => {
         return {
           validator(_, value) {
-            console.log("%cindex.tsx line:27 ", "color: #007acc;", value);
             if (!value || getFieldValue("password") === value) {
               return Promise.resolve();
             }

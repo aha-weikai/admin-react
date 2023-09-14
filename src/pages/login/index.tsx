@@ -4,6 +4,7 @@ import { Button, Form, Input } from "antd";
 import { Rule } from "antd/es/form";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { Page } from "./css";
+import { verifyPassword } from "@/utils";
 
 const onFinish = (values: any) => {
   console.log("Success:", values);
@@ -19,14 +20,13 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
       { required: true, message: "请输入账号！" },
       { max: 20, message: "账号最长为20个字母" },
       { min: 6, message: "账号最短为6个字母" },
-      ({ getFieldValue }) => {
+      () => {
         return {
           validator(_, value) {
-            console.log("%cindex.tsx line:27 ", "color: #007acc;", value);
-            if (!value || getFieldValue("password") === value) {
+            if (verifyPassword(value)) {
               return Promise.resolve();
             }
-            return Promise.reject(new Error("The new password that you entered do not match!"));
+            return Promise.reject(new Error(""));
           },
         };
       },
@@ -75,7 +75,7 @@ const Login = () => {
             <Skull theme="outline" size="24" fill="#3b82f6" className="pr-2" />
             ahaK-admin
           </h1>
-          <h6 className="text-sm text-gray-400 text-center mb-8">初代版本的后台管理系统</h6>
+          <h6 className="text-sm text-gray-400 text-center mb-8">初代的后台管理系统</h6>
           <Form
             name="login"
             initialValues={{ remember: true }}
@@ -86,7 +86,7 @@ const Login = () => {
           >
             {Object.entries(loginForm).map(([key, { label, rules, prefix }]) => (
               <div key={key} className="flex">
-                <Form.Item name={key} rules={rules} key={key} className="flex-1">
+                <Form.Item name={key} rules={rules} key={key} validateFirst className="flex-1">
                   {key === "password" ? <Input.Password prefix={prefix} className="w-full" /> : <Input prefix={prefix} />}
                 </Form.Item>
                 {key === "captcha" ? CaptchaSvg : undefined}

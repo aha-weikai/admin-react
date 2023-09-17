@@ -23,10 +23,11 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
       () => {
         return {
           validator(_, value) {
+            console.log("%cindex.tsx line:26 object", "color: #007acc;", verifyPassword(value));
             if (verifyPassword(value)) {
               return Promise.resolve();
             }
-            return Promise.reject(new Error(""));
+            return Promise.reject(new Error("密码为英文字母，数字和键盘符号"));
           },
         };
       },

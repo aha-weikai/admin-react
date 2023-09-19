@@ -4,7 +4,7 @@ import { Button, Form, Input } from "antd";
 import { Rule } from "antd/es/form";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { Page } from "./css";
-import { verifyPassword } from "@/utils";
+import { verifyAccount, verifyPassword } from "@/utils";
 
 const onFinish = (values: any) => {
   console.log("Success:", values);
@@ -20,17 +20,12 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
       { required: true, message: "请输入账号！" },
       { max: 20, message: "账号最长为20个字母" },
       { min: 6, message: "账号最短为6个字母" },
-      () => {
-        return {
-          validator(_, value) {
-            console.log("%cindex.tsx line:26 object", "color: #007acc;", verifyPassword(value));
-            if (verifyPassword(value)) {
-              return Promise.resolve();
-            }
-            return Promise.reject(new Error("密码为英文字母，数字和键盘符号"));
-          },
-        };
-      },
+      () => ({
+        validator(_, value) {
+          if (verifyAccount(value)) return Promise.resolve();
+          return Promise.reject(new Error("账户为字母，数字，下划线，减号"));
+        },
+      }),
     ],
     prefix: <User theme="outline" size="20" fill="#333" />,
   },
@@ -40,6 +35,12 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
       { required: true, message: "请输入密码！" },
       { max: 20, message: "密码最长为20个字母" },
       { min: 6, message: "密码最短为6个字母" },
+      () => ({
+        validator(_, value) {
+          if (verifyPassword(value)) return Promise.resolve();
+          return Promise.reject(new Error("密码为字母，数字和键盘符号"));
+        },
+      }),
     ],
     prefix: <Lock theme="outline" size="20" fill="#333" />,
   },

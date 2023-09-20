@@ -6,10 +6,6 @@ import { ReactNode, useCallback, useEffect, useState } from "react";
 import { Page } from "./css";
 import { verifyAccount, verifyPassword } from "@/utils";
 
-const onFinish = (values: any) => {
-  console.log("Success:", values);
-};
-
 const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
 };
@@ -53,16 +49,20 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
 
 const Login = () => {
   const [captchaSvg, setCaptchaSvg] = useState("");
+  let captchaKey = "";
   const getCaptcha = () => {
     http.get("/captcha").then(res => {
-      console.log(res);
-      setCaptchaSvg(res.data);
+      captchaKey = res.data.captchaKey;
+      setCaptchaSvg(res.data.data);
     });
   };
   useEffect(getCaptcha, []);
 
-  const login = () => {
-    http.get("/auth/public_key").then(res => {
+  const onFinish = async (values: any) => {
+    console.log("Success:", values);
+    const {
+      data: { data },
+    } = await http.get("/auth/public_key").then(res => {
       console.log("%cindex.tsx line:8 res", "color: #007acc;", res);
     });
   };
@@ -96,7 +96,7 @@ const Login = () => {
             ))}
 
             <Form.Item className="flex justify-center">
-              <Button type="primary" htmlType="submit" onClick={login}>
+              <Button type="primary" htmlType="submit">
                 登录
               </Button>
             </Form.Item>

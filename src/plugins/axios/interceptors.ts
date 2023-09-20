@@ -8,8 +8,6 @@ export function dealWithToken(config: CreateAxiosOptions) {
 }
 
 export function dealWithRepeatableReq(config: CreateAxiosOptions) {
-  console.log(config);
-
   return config;
 }
 

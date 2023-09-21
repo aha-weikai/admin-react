@@ -5,6 +5,7 @@ import { Rule } from "antd/es/form";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { Page } from "./css";
 import { verifyAccount, verifyPassword } from "@/utils";
+import { login } from "./api";
 
 const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
@@ -50,21 +51,20 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
 const Login = () => {
   const [captchaSvg, setCaptchaSvg] = useState("");
   let captchaKey = "";
-  const getCaptcha = () => {
-    http.get("/captcha").then(res => {
-      captchaKey = res.data.captchaKey;
-      setCaptchaSvg(res.data.data);
-    });
+  const getCaptcha = async () => {
+    const [err, data] = await login.getCaptcha();
+    if (!err) {
+      setCaptchaSvg(data.data);
+      captchaKey = data.captchaKey;
+    }
   };
-  useEffect(getCaptcha, []);
+  useEffect(() => {
+    getCaptcha();
+  }, []);
 
   const onFinish = async (values: any) => {
-    console.log("Success:", values);
-    const {
-      data: { data },
-    } = await http.get("/auth/public_key").then(res => {
-      console.log("%cindex.tsx line:8 res", "color: #007acc;", res);
-    });
+    const [err, data] = await login.getPublicKey();
+    if (!err) console.log(data);
   };
 
   const CaptchaSvg = <div dangerouslySetInnerHTML={{ __html: captchaSvg }} className="h-[32px] w-[150px]" onClick={() => getCaptcha()}></div>;

@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { CreateAxiosOptions } from "./request/types";
 
 export function dealWithToken(config: CreateAxiosOptions) {
@@ -12,5 +13,11 @@ export function dealWithRepeatableReq(config: CreateAxiosOptions) {
 }
 
 export function dealWithResponseErr(err: any) {
-  console.log(err);
+  const response = err?.response || {};
+  const { data } = response;
+  return [true, data, response];
+}
+
+export function dealWithResponseSuccess(res: AxiosResponse): [boolean, any, AxiosResponse] {
+  return [false, res.data, res];
 }

@@ -1,7 +1,7 @@
 import { arrayIsNotHave, is2DArrays, isArray } from "@/utils";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { InterceptorManager } from "./interceptorManager";
-import { SetupInterceptorArgs, XAxiosInterceptorOptions } from "./types";
+import { SetupInterceptorArgs, XAxiosInterceptorOptions, Response } from "./types";
 
 type InterceptorType = "request" | "response";
 
@@ -37,6 +37,9 @@ export class Axios {
     }
   }
 
+  /**
+   * @description 存储interceptor的返回值 key
+   */
   saveInterceptor(type: InterceptorType, interceptor: any[], value: number) {
     if (type === "request") {
       this.requestInterceptorManager.set(interceptor, value);
@@ -44,6 +47,10 @@ export class Axios {
       this.responseInterceptorManager.set(interceptor, value);
     }
   }
+
+  /**
+   * @description 删除某个interceptor
+   */
   deleteInterceptor(type: InterceptorType, interceptor: any[]) {
     if (type === "request") {
       this.requestInterceptorManager.delete(interceptor);
@@ -51,6 +58,10 @@ export class Axios {
       this.responseInterceptorManager.delete(interceptor);
     }
   }
+
+  /**
+   * @description 清空 interceptor
+   */
   clearInterceptor(type?: InterceptorType) {
     if (type === "request") {
       this.instance.interceptors.request.clear();
@@ -62,6 +73,26 @@ export class Axios {
       this.clearInterceptor("request");
       this.clearInterceptor("response");
     }
+  }
+
+  request<T, D = any>(config: AxiosRequestConfig<D>): Response<T> {
+    return this.instance(config);
+  }
+
+  get<T, D = any>(url: string, config?: AxiosRequestConfig<D>): Response<T> {
+    return this.instance.get(url, config);
+  }
+
+  post<T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Response<T> {
+    return this.instance.post(url, data, config);
+  }
+
+  put<T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Response<T> {
+    return this.instance.put(url, data, config);
+  }
+
+  delete<T, D = any>(url: string, config?: AxiosRequestConfig<D>): Response<T> {
+    return this.instance.delete(url, config);
   }
 }
 

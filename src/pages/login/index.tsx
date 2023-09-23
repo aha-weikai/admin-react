@@ -1,11 +1,13 @@
-import { http } from "@/plugins/axios";
+import { verifyAccount, verifyPassword } from "@/utils";
 import { Lock, ShieldAdd, Skull, User } from "@icon-park/react";
 import { Button, Form, Input } from "antd";
 import { Rule } from "antd/es/form";
-import { ReactNode, useCallback, useEffect, useState } from "react";
-import { Page } from "./css";
-import { verifyAccount, verifyPassword } from "@/utils";
+import { ReactNode, useEffect, useState } from "react";
 import { login } from "./api";
+import { Page } from "./css";
+import JSEncrypt from "jsencrypt";
+import { LoginParams } from "./model";
+import { plainToInstance } from "class-transformer";
 
 const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
@@ -64,7 +66,17 @@ const Login = () => {
 
   const onFinish = async (values: any) => {
     const [err, data] = await login.getPublicKey();
-    if (!err) console.log(data);
+    console.log(values);
+    const newData = plainToInstance(LoginParams, values);
+    console.log(newData);
+    if (!err) {
+      console.log(data);
+      const encrypt = new JSEncrypt();
+      encrypt.setPublicKey(data);
+      const password = values.password;
+      const encrypted = encrypt.encrypt(password);
+      console.log(encrypted);
+    }
   };
 
   const CaptchaSvg = <div dangerouslySetInnerHTML={{ __html: captchaSvg }} className="h-[32px] w-[150px]" onClick={() => getCaptcha()}></div>;

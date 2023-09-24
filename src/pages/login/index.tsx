@@ -9,9 +9,6 @@ import JSEncrypt from "jsencrypt";
 import { LoginParams } from "./model";
 import { plainToInstance } from "class-transformer";
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log("Failed:", errorInfo);
-};
 const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNode }> = {
   account: {
     label: "account",
@@ -90,14 +87,7 @@ const Login = () => {
             ahaK-admin
           </h1>
           <h6 className="text-sm text-gray-400 text-center mb-8">初代的后台管理系统</h6>
-          <Form
-            name="login"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-            className="w-[300px] mx-auto"
-          >
+          <Form name="login" initialValues={{ remember: true }} onFinish={onFinish} autoComplete="off" className="w-[300px] mx-auto">
             {Object.entries(loginForm).map(([key, { label, rules, prefix }]) => (
               <div key={key} className="flex">
                 <Form.Item name={key} rules={rules} key={key} validateFirst className="flex-1">

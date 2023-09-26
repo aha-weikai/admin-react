@@ -4,6 +4,7 @@ import { Button, Form, Input } from "antd";
 import { Rule } from "antd/es/form";
 import JSEncrypt from "jsencrypt";
 import { ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import { login } from "../login/api";
 import { RegisterParams, register } from "./api";
 
@@ -21,28 +22,22 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
 };
 
 const Register = () => {
+  const navigate = useNavigate();
   const onFinish = async (values: any) => {
     const [err, data] = await login.getPublicKey();
     if (!err) {
-      console.log(data);
       const encrypt = new JSEncrypt();
       encrypt.setPublicKey(data);
       const password = encrypt.encrypt(values.password);
-      const registerParams = plainToInstance(
-        RegisterParams,
-        {
-          account: values.account,
-          password,
-          confirmedPassword: password,
-          publicKey: data,
-        },
-        { excludeExtraneousValues: true }
-      );
-      console.log("%cindex.tsx line:44 registerParams", "color: #007acc;", registerParams);
-      const [err, rData] = await register(registerParams);
-      if (!err) {
-        console.log(rData);
-      }
+      const registerParams = plainToInstance(RegisterParams, {
+        account: values.account,
+        password,
+        confirmedPassword: password,
+        publicKey: data,
+      });
+
+      const [err] = await register(registerParams);
+      if (!err) navigate("/");
     }
   };
 

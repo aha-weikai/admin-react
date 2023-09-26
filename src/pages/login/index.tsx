@@ -6,8 +6,6 @@ import { ReactNode, useEffect, useState } from "react";
 import { login } from "./api";
 import { Page } from "./css";
 import JSEncrypt from "jsencrypt";
-import { LoginParams } from "./model";
-import { plainToInstance } from "@/utils";
 
 const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNode }> = {
   account: {
@@ -62,17 +60,18 @@ const Login = () => {
   }, []);
 
   const onFinish = async (values: any) => {
-    const [err, data] = await login.getPublicKey();
-    console.log(values);
-    const newData = plainToInstance(LoginParams, values);
-    console.log(newData);
+    const [err, publicKey] = await login.getPublicKey();
     if (!err) {
-      console.log(data);
       const encrypt = new JSEncrypt();
-      encrypt.setPublicKey(data);
-      const password = values.password;
-      const encrypted = encrypt.encrypt(password);
-      console.log(encrypted);
+      encrypt.setPublicKey(publicKey);
+      const password = encrypt.encrypt(values.password);
+      const newData = {
+        account: values.account,
+        password,
+        captchaKey,
+        publicKey,
+        captchaData: values.captcha,
+      };
     }
   };
 

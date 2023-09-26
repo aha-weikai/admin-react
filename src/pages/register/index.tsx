@@ -1,11 +1,11 @@
+import { plainToInstance } from "@/utils";
+import { Lock, User } from "@icon-park/react";
 import { Button, Form, Input } from "antd";
-import { login } from "../login/api";
+import { Rule } from "antd/es/form";
 import JSEncrypt from "jsencrypt";
 import { ReactNode } from "react";
-import { Lock, ShieldAdd, Skull, User } from "@icon-park/react";
-import { Rule } from "antd/es/form";
+import { login } from "../login/api";
 import { RegisterParams, register } from "./api";
-import { plainToInstance } from "class-transformer";
 
 const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNode }> = {
   account: {
@@ -27,9 +27,7 @@ const Register = () => {
       console.log(data);
       const encrypt = new JSEncrypt();
       encrypt.setPublicKey(data);
-      const password = values.password;
-      const encrypted = encrypt.encrypt(password);
-      console.log(encrypted);
+      const password = encrypt.encrypt(values.password);
       const registerParams = plainToInstance(
         RegisterParams,
         {
@@ -37,12 +35,14 @@ const Register = () => {
           password,
           confirmedPassword: password,
           publicKey: data,
-          aaa: "aaa",
         },
         { excludeExtraneousValues: true }
       );
       console.log("%cindex.tsx line:44 registerParams", "color: #007acc;", registerParams);
-      register.register(registerParams);
+      const [err, rData] = await register(registerParams);
+      if (!err) {
+        console.log(rData);
+      }
     }
   };
 

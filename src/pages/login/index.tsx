@@ -7,7 +7,7 @@ import { login } from "./api";
 import { Page } from "./css";
 import JSEncrypt from "jsencrypt";
 import { LoginParams } from "./model";
-import { plainToInstance } from "class-transformer";
+import { plainToInstance } from "@/utils";
 
 const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNode }> = {
   account: {

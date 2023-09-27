@@ -24,4 +24,4 @@ export interface SetupInterceptorArgs {
   response: XAxiosResponseInterceptorOptions<AxiosResponse>[] | XAxiosResponseInterceptorOptions<AxiosResponse>;
 }
 
-export type Response<T> = Promise<[boolean, T, AxiosResponse<T>]>;
+export type Response<T> = Promise<[boolean, { message: any; data: T }, AxiosResponse<T>]>;

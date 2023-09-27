@@ -1,34 +1,40 @@
-import { plainToInstance } from "@/utils";
+import { encrypt, plainToInstance } from "@/plugins";
 import { Lock, User } from "@icon-park/react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Rule } from "antd/es/form";
-import JSEncrypt from "jsencrypt";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../login/api";
+import { getPublicKey } from "../login/api";
 import { RegisterParams, register } from "./api";
 
-const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNode }> = {
+const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNode; text: string }> = {
   account: {
     label: "account",
     rules: [{ required: true, message: "请输入账号！" }],
     prefix: <User theme="outline" size="20" fill="#333" />,
+    text: "账号",
   },
   password: {
     label: "password",
     rules: [{ required: true, message: "请输入密码！" }],
     prefix: <Lock theme="outline" size="20" fill="#333" />,
+    text: "密码",
   },
+};
+
+const showMessage = (text: string) => {
+  message.error(text);
 };
 
 const Register = () => {
   const navigate = useNavigate();
+  // const [messageApi, contextHolder] = message.useMessage();
+
   const onFinish = async (values: any) => {
-    const [err, data] = await login.getPublicKey();
+    const [err, { data }] = await getPublicKey();
     if (!err) {
-      const encrypt = new JSEncrypt();
-      encrypt.setPublicKey(data);
-      const password = encrypt.encrypt(values.password);
+      const password = encrypt(data, values.password);
+
       const registerParams = plainToInstance(RegisterParams, {
         account: values.account,
         password,
@@ -36,8 +42,14 @@ const Register = () => {
         publicKey: data,
       });
 
-      const [err] = await register(registerParams);
-      if (!err) navigate("/");
+      const [err, { message }] = await register(registerParams);
+      if (!err) {
+        navigate("/");
+      } else {
+        const msgText = `${loginForm[message[0].field].text}:${message[0].message}`;
+        // messageApi.error(msgText);
+        showMessage(msgText);
+      }
     }
   };
 
@@ -55,6 +67,7 @@ const Register = () => {
               </div>
             ))}
             <Form.Item className="flex justify-center">
+              {/* {contextHolder} */}
               <Button type="primary" htmlType="submit">
                 注册
               </Button>

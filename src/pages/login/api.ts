@@ -1,11 +1,9 @@
 import { http } from "@/plugins/axios";
 
-export const login = {
-  getCaptcha() {
-    return http.get<{ captchaKey: string; data: string }>("/captcha");
-  },
+export function getCaptcha() {
+  return http.get<{ captchaKey: string; data: string }>("/captcha");
+}
 
-  getPublicKey() {
-    return http.get<string>("/auth/public_key");
-  },
-};
+export function getPublicKey() {
+  return http.get<string>("/auth/public_key");
+}

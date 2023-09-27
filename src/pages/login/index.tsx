@@ -1,11 +1,11 @@
+import { encrypt } from "@/plugins";
 import { verifyAccount, verifyPassword } from "@/utils";
 import { Lock, ShieldAdd, Skull, User } from "@icon-park/react";
 import { Button, Form, Input } from "antd";
 import { Rule } from "antd/es/form";
 import { ReactNode, useEffect, useState } from "react";
-import { login } from "./api";
+import * as api from "./api";
 import { Page } from "./css";
-import JSEncrypt from "jsencrypt";
 
 const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNode }> = {
   account: {
@@ -49,7 +49,7 @@ const Login = () => {
   const [captchaSvg, setCaptchaSvg] = useState("");
   let captchaKey = "";
   const getCaptcha = async () => {
-    const [err, data] = await login.getCaptcha();
+    const [err, { data }] = await api.getCaptcha();
     if (!err) {
       setCaptchaSvg(data.data);
       captchaKey = data.captchaKey;
@@ -60,11 +60,9 @@ const Login = () => {
   }, []);
 
   const onFinish = async (values: any) => {
-    const [err, publicKey] = await login.getPublicKey();
+    const [err, { data: publicKey }] = await api.getPublicKey();
     if (!err) {
-      const encrypt = new JSEncrypt();
-      encrypt.setPublicKey(publicKey);
-      const password = encrypt.encrypt(values.password);
+      const password = encrypt(publicKey, values.password);
       const newData = {
         account: values.account,
         password,

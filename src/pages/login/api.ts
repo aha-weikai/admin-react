@@ -7,3 +7,7 @@ export function getCaptcha() {
 export function getPublicKey() {
   return http.get<string>("/auth/public_key");
 }
+
+export function login() {
+  return http.post("/auth/login");
+}

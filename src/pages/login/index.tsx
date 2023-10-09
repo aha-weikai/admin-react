@@ -1,11 +1,12 @@
 import { encrypt } from "@/plugins";
 import { verifyAccount, verifyPassword } from "@/utils";
 import { Lock, ShieldAdd, Skull, User } from "@icon-park/react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Rule } from "antd/es/form";
 import { ReactNode, useEffect, useState } from "react";
 import * as api from "./api";
 import { Page } from "./css";
+import { useNavigate } from "react-router-dom";
 
 const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNode }> = {
   account: {
@@ -46,6 +47,8 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
 };
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [captchaSvg, setCaptchaSvg] = useState("");
   let captchaKey = "";
   const getCaptcha = async () => {
@@ -60,9 +63,17 @@ const Login = () => {
   }, []);
 
   const onFinish = async (values: any) => {
-    const [err, { data: publicKey }] = await api.getPublicKey();
-    if (!err) {
-      const password = encrypt(publicKey, values.password);
+    const [err, { data: publicKey, message: errMsg }] = await api.getPublicKey();
+    if (err) {
+      message.error(errMsg);
+      return;
+    }
+    login(values, publicKey);
+  };
+
+  const login = async (values: { password: string; account: any; captcha: any }, publicKey: string) => {
+    const password = encrypt(publicKey, values.password);
+    if (password) {
       const newData = {
         account: values.account,
         password,
@@ -70,6 +81,15 @@ const Login = () => {
         publicKey,
         captchaData: values.captcha,
       };
+      const [err] = await api.login(newData);
+      if (err) {
+        message.error("登录失败");
+        return;
+      } else {
+        navigate({ pathname: "/home" });
+      }
+    } else {
+      message.warning("请检查密码是否正确");
     }
   };
 

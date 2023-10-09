@@ -3,7 +3,7 @@ import { verifyAccount, verifyPassword } from "@/utils";
 import { Lock, ShieldAdd, Skull, User } from "@icon-park/react";
 import { Button, Form, Input, message } from "antd";
 import { Rule } from "antd/es/form";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import * as api from "./api";
 import { Page } from "./css";
 import { useNavigate } from "react-router-dom";
@@ -50,12 +50,14 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [captchaSvg, setCaptchaSvg] = useState("");
-  let captchaKey = "";
+  const captchaKey = useRef("");
+  console.log("captchaKey:", captchaKey, "-----");
   const getCaptcha = async () => {
     const [err, { data }] = await api.getCaptcha();
     if (!err) {
       setCaptchaSvg(data.data);
-      captchaKey = data.captchaKey;
+      captchaKey.current = data.captchaKey;
+      console.log(captchaKey);
     }
   };
   useEffect(() => {
@@ -77,7 +79,7 @@ const Login = () => {
       const newData = {
         account: values.account,
         password,
-        captchaKey,
+        captchaKey: captchaKey.current,
         publicKey,
         captchaData: values.captcha,
       };

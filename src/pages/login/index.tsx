@@ -51,13 +51,11 @@ const Login = () => {
 
   const [captchaSvg, setCaptchaSvg] = useState("");
   const captchaKey = useRef("");
-  console.log("captchaKey:", captchaKey, "-----");
   const getCaptcha = async () => {
     const [err, { data }] = await api.getCaptcha();
     if (!err) {
       setCaptchaSvg(data.data);
       captchaKey.current = data.captchaKey;
-      console.log(captchaKey);
     }
   };
   useEffect(() => {

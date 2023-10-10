@@ -3,6 +3,7 @@ import Login from "@/pages/login";
 import ResetPassword from "@/pages/resetPassword";
 import Register from "@/pages/register";
 import Home from "@/pages/home";
+import LayOut from "@/layouts";
 
 export const router = createBrowserRouter([
   {
@@ -22,8 +23,8 @@ export const router = createBrowserRouter([
     Component: Register,
   },
   {
-    path: "/home",
-    Component: Home,
+    path: "*",
+    Component: LayOut,
   },
 ]);
 

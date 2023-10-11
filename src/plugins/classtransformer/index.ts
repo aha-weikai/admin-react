@@ -10,6 +10,7 @@ export type { ClassConstructor } from "class-transformer";
  * @param options
  */
 export function plainToInstance<T, V>(cls: ClassConstructor<T>, plain: V, options?: ClassTransformOptions | undefined): T;
-export function plainToInstance<T, V>(cls: ClassConstructor<T>, plain: V[], options?: ClassTransformOptions | undefined): T[] {
+export function plainToInstance<T, V>(cls: ClassConstructor<T>, plain: V[], options?: ClassTransformOptions | undefined): T[];
+export function plainToInstance(cls: any, plain: any, options?: any) {
   return _plainToInstance(cls, plain, { excludeExtraneousValues: true, ...options });
 }

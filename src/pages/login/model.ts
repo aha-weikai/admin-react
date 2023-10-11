@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
 
-export class LoginParam {
+export class LoginParams {
   @Expose()
   account!: string;
 

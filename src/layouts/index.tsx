@@ -6,8 +6,8 @@ const LayOut = () => {
   return (
     <>
       <TopBar></TopBar>
-      <div>
-        <div className="leftMenu">
+      <div className="flex">
+        <div className="">
           <LeftMenu></LeftMenu>
         </div>
         <div className="content">

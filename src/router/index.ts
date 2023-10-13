@@ -1,9 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "@/pages/login";
-import ResetPassword from "@/pages/resetPassword";
-import Register from "@/pages/register";
-import Home from "@/pages/home";
 import LayOut from "@/layouts";
+import Login from "@/pages/login";
+import Register from "@/pages/register";
+import ResetPassword from "@/pages/resetPassword";
+import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {

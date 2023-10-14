@@ -1,5 +1,11 @@
+import AdminHeader from "../components/adminHeader";
+
 const LeftMenu = () => {
-  return <div>leftMenu</div>;
+  return (
+    <div>
+      <AdminHeader></AdminHeader>
+    </div>
+  );
 };
 
 export default LeftMenu;

@@ -4,6 +4,7 @@ const LeftMenu = () => {
   return (
     <div>
       <AdminHeader></AdminHeader>
+      <div></div>
     </div>
   );
 };

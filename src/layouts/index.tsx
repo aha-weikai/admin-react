@@ -7,15 +7,14 @@ import React from "react";
 const { Header, Content, Footer, Sider } = Layout;
 // TODO 使用antd的layout布局
 const LayOut = () => {
-  const colorBgContainer = "#fff";
+  const colorBgContainer = "green";
   return (
-    <>
-      <Layout>
-        <LeftMenu></LeftMenu>
+    <Layout style={{ display: "flex", flexDirection: "row" }}>
+      <LeftMenu></LeftMenu>
+      <Layout style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TopBar></TopBar>
-
-        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
-          <div style={{ padding: 24, textAlign: "center", background: colorBgContainer }}>
+        <Content style={{ overflow: "initial", background: "green" }}>
+          <div style={{ textAlign: "center", background: colorBgContainer }}>
             <p>long content</p>
             {
               // indicates very long content
@@ -30,14 +29,7 @@ const LayOut = () => {
         </Content>
         <Footer style={{ textAlign: "center" }}>Ant Design ©2023 Created by Ant UED</Footer>
       </Layout>
-
-      <div className="flex">
-        <div className=""></div>
-        <div className="content">
-          <Content></Content>
-        </div>
-      </div>
-    </>
+    </Layout>
   );
 };
 

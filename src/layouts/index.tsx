@@ -1,33 +1,64 @@
-import { Layout, Menu } from "antd";
-// import Content from "./centerContent";
-import LeftMenu from "./leftMenu";
-import TopBar from "./topBar";
-import React from "react";
+import { Button, Layout, Menu, theme } from "antd";
 
+import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { useState } from "react";
 const { Header, Content, Footer, Sider } = Layout;
 // TODO 使用antd的layout布局
 const LayOut = () => {
-  const colorBgContainer = "green";
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+  const [collapsed, setCollapsed] = useState(false);
   return (
-    <Layout style={{ display: "flex", flexDirection: "row" }}>
-      <LeftMenu></LeftMenu>
-      <Layout style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <TopBar></TopBar>
-        <Content style={{ overflow: "initial", background: "green" }}>
-          <div style={{ textAlign: "center", background: colorBgContainer }}>
-            <p>long content</p>
+    <Layout style={{ position: "fixed", left: 0, right: 0, bottom: 0, top: 0 }}>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <div className="demo-logo-vertical" />
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          items={[
             {
-              // indicates very long content
-              Array.from({ length: 100 }, (_, index) => (
-                <React.Fragment key={index}>
-                  {index % 20 === 0 && index ? "more" : "..."}
-                  <br />
-                </React.Fragment>
-              ))
-            }
-          </div>
+              key: "1",
+              icon: <UserOutlined />,
+              label: "nav 1",
+            },
+            {
+              key: "2",
+              icon: <VideoCameraOutlined />,
+              label: "nav 2",
+            },
+            {
+              key: "3",
+              icon: <UploadOutlined />,
+              label: "nav 3",
+            },
+          ]}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ padding: 0, background: colorBgContainer }}>
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              fontSize: "16px",
+              width: 64,
+              height: 64,
+            }}
+          />
+        </Header>
+        <Content
+          style={{
+            margin: "24px 16px",
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer,
+          }}
+        >
+          Content
         </Content>
-        <Footer style={{ textAlign: "center" }}>Ant Design ©2023 Created by Ant UED</Footer>
       </Layout>
     </Layout>
   );

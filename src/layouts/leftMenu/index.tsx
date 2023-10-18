@@ -24,20 +24,28 @@ const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, BarChartOutlin
 
 const LeftMenu = () => {
   return (
-    <Layout hasSider style={{ display: "flex", flexDirection: "column", flex: 0 }}>
-      <AdminHeader></AdminHeader>
-      <Sider
-        style={{
-          overflow: "auto",
-          position: "fixed",
-          left: 0,
-          flex: "1",
-        }}
-        theme={"light"}
-      >
-        <Menu theme="light" mode="inline" defaultSelectedKeys={["4"]} items={items}></Menu>
-      </Sider>
-    </Layout>
+    <Menu
+      theme="light"
+      mode="inline"
+      defaultSelectedKeys={["1"]}
+      items={[
+        {
+          key: "1",
+          icon: <UserOutlined />,
+          label: "nav 1",
+        },
+        {
+          key: "2",
+          icon: <VideoCameraOutlined />,
+          label: "nav 2",
+        },
+        {
+          key: "3",
+          icon: <UploadOutlined />,
+          label: "nav 3",
+        },
+      ]}
+    />
   );
 };
 

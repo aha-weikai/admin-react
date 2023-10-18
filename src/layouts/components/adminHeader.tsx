@@ -1,21 +1,42 @@
 import { GameHandle } from "@icon-park/react";
 import { Layout } from "antd";
-
-const { Sider, Header } = Layout;
+import { CollapsedContext } from "../context";
+import { useContext } from "react";
+import styled from "styled-components";
 
 const AdminHeader = () => {
+  const collapsed = useContext(CollapsedContext);
   return (
-    <Layout hasSider>
-      <Sider theme={"light"}>
-        <Header style={{ paddingInline: 0, background: "#fff", display: "flex", justifyContent: "center" }}>
-          <div className="flex justify-center items-center p-3">
-            <GameHandle theme="multi-color" size="28" fill={["#333", "#66a7fc", "#FFF", "#43CCF8"]} />
-            <div className="text-neutral-700 text-center font-semibold text-2xl">KK-admin</div>
-          </div>
-        </Header>
-      </Sider>
-    </Layout>
+    <AdminTitle>
+      <GameHandle theme="multi-color" size="28" fill={["#333", "#66a7fc", "#FFF", "#43CCF8"]} />
+      {collapsed ? "" : <div className="text-neutral-700 text-center font-semibold  title">KK-admin</div>}
+    </AdminTitle>
   );
 };
 
 export default AdminHeader;
+
+const AdminTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem /* 12px */;
+
+  .title {
+    animation-duration: 0.2s;
+    animation-name: fontSize;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fontSize {
+    0% {
+      font-size: 0.5em;
+    }
+
+    100% {
+      font-size: 1.5rem /* 24px */;
+      line-height: 2rem /* 32px */;
+    }
+  }
+`;

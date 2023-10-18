@@ -1,27 +1,35 @@
-import { MenuUnfoldOne } from "@icon-park/react";
+import { Dvi, MenuUnfoldOne } from "@icon-park/react";
 import AdminHeader from "../components/adminHeader";
-import { Layout } from "antd";
+import { Button, Layout } from "antd";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { useContext } from "react";
+import { CollapsedContext } from "../context";
+import React from "react";
 
 const { Header } = Layout;
 
-const TopBar = () => {
+const TopBar = ({ setCollapsed }: { setCollapsed: React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const collapsed = useContext(CollapsedContext);
   return (
-    <Layout hasSider>
-      <Header style={{ position: "fixed", left: 0, right: 0, top: 0, paddingInline: 0, background: "#fff", display: "flex", justifyContent: "space-between" }}>
-        <div className="flex items-center">
-          <AdminHeader></AdminHeader>
-          <MenuUnfoldOne theme="outline" size="24" fill="#333" />
-          <div>搜索</div>
-        </div>
-        {/* 右侧按钮组 */}
-        <div className="flex">
-          <div>主题切换</div>
-          <div>语言切换</div>
-          <div>消息通知</div>
-          <div>账号设置</div>
-        </div>
-      </Header>
-    </Layout>
+    <div className="flex items-center">
+      <Button
+        type="text"
+        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={() => setCollapsed(!collapsed)}
+        style={{
+          fontSize: "16px",
+          width: 64,
+          height: 64,
+        }}
+      />
+      {/* 右侧按钮组 */}
+      <div className="flex">
+        <div>主题切换</div>
+        <div>语言切换</div>
+        <div>消息通知</div>
+        <div>账号设置</div>
+      </div>
+    </div>
   );
 };
 

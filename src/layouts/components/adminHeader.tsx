@@ -21,6 +21,7 @@ const AdminTitle = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0.75rem /* 12px */;
+  line-height: 2rem /* 32px */;
 
   .title {
     animation-duration: 0.2s;
@@ -36,7 +37,6 @@ const AdminTitle = styled.div`
 
     100% {
       font-size: 1.5rem /* 24px */;
-      line-height: 2rem /* 32px */;
     }
   }
 `;

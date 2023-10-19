@@ -6,6 +6,8 @@ import AdminHeader from "./components/adminHeader";
 import { CollapsedContext } from "./context";
 import LeftMenu from "./leftMenu";
 import TopBar from "./topBar";
+import { Outlet, RouterProvider } from "react-router-dom";
+import { router } from "@/router";
 
 const { Header, Content, Sider } = Layout;
 
@@ -33,7 +35,9 @@ const LayOut = () => {
               minHeight: 280,
               background: colorBgContainer,
             }}
-          ></Content>
+          >
+            <Outlet />
+          </Content>
         </Layout>
       </CollapsedContext.Provider>
     </Layout>

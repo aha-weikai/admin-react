@@ -24,6 +24,7 @@ export const router = createBrowserRouter([
   {
     path: "*",
     Component: LayOut,
+    children: [],
   },
 ]);
 

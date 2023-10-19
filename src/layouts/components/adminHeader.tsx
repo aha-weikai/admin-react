@@ -8,8 +8,10 @@ const AdminHeader = () => {
   const collapsed = useContext(CollapsedContext);
   return (
     <AdminTitle>
-      <GameHandle theme="multi-color" size="28" fill={["#333", "#66a7fc", "#FFF", "#43CCF8"]} />
-      {collapsed ? "" : <div className="text-neutral-700 text-center font-semibold  title">KK-admin</div>}
+      <div className="py-[2px] flex">
+        <GameHandle theme="multi-color" size="28" fill={["#333", "#66a7fc", "#FFF", "#43CCF8"]} />
+      </div>
+      {collapsed ? "" : <div className="text-neutral-700 text-center font-semibold   title">KK-admin</div>}
     </AdminTitle>
   );
 };
@@ -21,7 +23,6 @@ const AdminTitle = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0.75rem /* 12px */;
-  line-height: 2rem /* 32px */;
 
   .title {
     animation-duration: 0.2s;
@@ -32,11 +33,12 @@ const AdminTitle = styled.div`
 
   @keyframes fontSize {
     0% {
-      font-size: 0.5em;
+      font-size: 0.3rem;
     }
 
     100% {
       font-size: 1.5rem /* 24px */;
+      line-height: 2rem /* 32px */;
     }
   }
 `;

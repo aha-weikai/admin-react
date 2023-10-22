@@ -1,13 +1,12 @@
-import { Button, Layout, Menu, theme } from "antd";
+import { Layout, theme } from "antd";
 
-import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
-import { useState, useContext } from "react";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import Breadcrumb from "./components/Breadcrumb";
 import AdminHeader from "./components/adminHeader";
 import { CollapsedContext } from "./context";
 import LeftMenu from "./leftMenu";
 import TopBar from "./topBar";
-import { Outlet, RouterProvider } from "react-router-dom";
-import { router } from "@/router";
 
 const { Header, Content, Sider } = Layout;
 
@@ -28,8 +27,7 @@ const LayOut = () => {
           <Header style={{ padding: 0, background: colorBgContainer }}>
             <TopBar setCollapsed={setCollapsed}></TopBar>
           </Header>
-          // TODO 使用面包屑
-          {/* https://juejin.cn/post/7291194160370171963 */}
+          <Breadcrumb></Breadcrumb>
           <Content
             style={{
               margin: "24px 16px",

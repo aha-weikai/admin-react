@@ -21,3 +21,14 @@ export function dealWithResponseErr(err: any) {
 export function dealWithResponseSuccess(res: AxiosResponse): [boolean, any, AxiosResponse] {
   return [false, res.data, res];
 }
+
+/**
+ * # 处理过期token
+ * @param err 
+ */
+export function dealWithExpiredToken(err: any) {
+  const response = err?.response || {};
+  if (response.status === 401) {
+
+  }
+}

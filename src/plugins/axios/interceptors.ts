@@ -23,6 +23,7 @@ export function dealWithResponseSuccess(res: AxiosResponse): [boolean, any, Axio
 }
 
 const requestQueue: { resolve: any; config: any; type: "request" | "response" }[] = [];
+let refreshTokenFlag = false;
 /**
  * # 处理过期token
  * @param err
@@ -37,7 +38,30 @@ export function dealWithExpiredToken(err: any) {
         config,
         type: "response",
       });
+
+      console.log(err);
+      if (!refreshTokenFlag) {
+        refreshToken();
+      }
     });
-    console.log(err);
   }
+}
+
+function refreshToken() {
+  refreshTokenFlag = true;
+  // const {} =
+  let refreshToken = "";
+  if (!refreshToken) {
+    // 跳转到登录页
+  }
+
+  // 调用 refreshToken 接口
+
+  // 如果接口报错，就跳转登录页
+
+  // 接口没报错，设置新的token
+
+  refreshTokenFlag = false;
+
+  //
 }

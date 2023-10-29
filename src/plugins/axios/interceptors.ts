@@ -22,13 +22,22 @@ export function dealWithResponseSuccess(res: AxiosResponse): [boolean, any, Axio
   return [false, res.data, res];
 }
 
+const requestQueue: { resolve: any; config: any; type: "request" | "response" }[] = [];
 /**
  * # 处理过期token
- * @param err 
+ * @param err
  */
 export function dealWithExpiredToken(err: any) {
-  const response = err?.response || {};
-  if (response.status === 401) {
-
+  console.log("处理过期token");
+  const { status, config } = err?.response || {};
+  if (status === 401) {
+    return new Promise(resolve => {
+      requestQueue.push({
+        resolve,
+        config,
+        type: "response",
+      });
+    });
+    console.log(err);
   }
 }

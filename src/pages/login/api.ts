@@ -20,3 +20,7 @@ export async function login(param: LoginParams) {
   }
   return [err, { data }];
 }
+
+export function getUserInfo() {
+  return http.get("/user_info");
+}

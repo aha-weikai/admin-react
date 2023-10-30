@@ -1,7 +1,7 @@
 import { arrayIsNotHave, is2DArrays, isArray } from "@/utils";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { InterceptorManager } from "./interceptorManager";
-import { SetupInterceptorArgs, XAxiosInterceptorOptions, Response } from "./types";
+import { SetupInterceptorArgs, XAxiosInterceptorOptions, Response, CreateAxiosOptions } from "./types";
 
 type InterceptorType = "request" | "response";
 
@@ -9,7 +9,7 @@ export class Axios {
   private instance: AxiosInstance;
   requestInterceptorManager: InterceptorManager;
   responseInterceptorManager: InterceptorManager;
-  constructor(defaultConfig: AxiosRequestConfig, interceptorOption?: SetupInterceptorArgs) {
+  constructor(defaultConfig: CreateAxiosOptions, interceptorOption?: SetupInterceptorArgs) {
     this.requestInterceptorManager = new InterceptorManager();
     this.responseInterceptorManager = new InterceptorManager();
     this.instance = axios.create(defaultConfig);
@@ -75,23 +75,23 @@ export class Axios {
     }
   }
 
-  request<T, D = any>(config: AxiosRequestConfig<D>): Response<T> {
+  request<T, D = any>(config: CreateAxiosOptions): Response<T> {
     return this.instance(config);
   }
 
-  get<T, D = any>(url: string, config?: AxiosRequestConfig<D>): Response<T> {
+  get<T, D = any>(url: string, config?: CreateAxiosOptions): Response<T> {
     return this.instance.get(url, config);
   }
 
-  post<T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Response<T> {
+  post<T, D = any>(url: string, data?: D, config?: CreateAxiosOptions): Response<T> {
     return this.instance.post(url, data, config);
   }
 
-  put<T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Response<T> {
+  put<T, D = any>(url: string, data?: D, config?: CreateAxiosOptions): Response<T> {
     return this.instance.put(url, data, config);
   }
 
-  delete<T, D = any>(url: string, config?: AxiosRequestConfig<D>): Response<T> {
+  delete<T, D = any>(url: string, config?: CreateAxiosOptions): Response<T> {
     return this.instance.delete(url, config);
   }
 }

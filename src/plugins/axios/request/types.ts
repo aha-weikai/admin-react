@@ -1,9 +1,10 @@
 import { AxiosInterceptorOptions, AxiosRequestConfig, AxiosResponse } from "axios";
 
+/** # 请求自定义配置*/
 interface HttpCustomOptions {
-  // 是否携带token
+  /** # 是否携带token */
   withToken?: boolean;
-  // 是否可取消
+  /** # 是否可取消 */
   withCancelToken?: boolean;
 }
 

@@ -6,6 +6,9 @@ export const http = new Axios(
   {
     baseURL: HTTP_BASE_URL,
     timeout: 10 * 1000,
+    _customOptions: {
+      withToken: true,
+    },
   },
   {
     request: [

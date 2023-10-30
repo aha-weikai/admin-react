@@ -11,3 +11,12 @@ export function formatParam<T, V>(cls: ClassConstructor<T>, plain: V[]): T[];
 export function formatParam<T, V>(cls: any, plain: any) {
   return plainToInstance(cls, plain);
 }
+
+/**
+ * # 获取bearer token
+ * @param token
+ * @returns
+ */
+export function getToken(token: string) {
+  return "Bearer " + token;
+}

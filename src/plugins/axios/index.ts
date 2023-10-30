@@ -1,6 +1,6 @@
 import { HTTP_BASE_URL } from "@/config";
 import { Axios } from "./request";
-import { dealWithExpiredToken, dealWithRepeatableReq, dealWithResponseErr, dealWithResponseSuccess, dealWithToken } from "./interceptors";
+import { dealWithExpiredToken, dealWithRepeatedReq, dealWithResponseErr, dealWithResponseSuccess, dealWithToken } from "./request/interceptors";
 
 export const http = new Axios(
   {
@@ -13,7 +13,7 @@ export const http = new Axios(
   {
     request: [
       [dealWithToken, null],
-      [dealWithRepeatableReq, null],
+      [dealWithRepeatedReq, null],
     ],
     response: [
       [null, dealWithExpiredToken],

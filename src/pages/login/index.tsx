@@ -47,7 +47,6 @@ const loginForm: Record<string, { label: string; rules?: Rule[]; prefix: ReactNo
 };
 
 const Login = () => {
-  api.getUserInfo();
   const navigate = useNavigate();
 
   const [captchaSvg, setCaptchaSvg] = useState("");

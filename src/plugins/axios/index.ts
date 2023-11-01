@@ -19,8 +19,8 @@ export const http = new Axios(
   },
   {
     request: [
-      [dealWithReqWhenTokenExpired, null],
       [dealWithToken, null],
+      [dealWithReqWhenTokenExpired, null],
       [dealWithRepeatedReq, null],
     ],
     response: [

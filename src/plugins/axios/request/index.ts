@@ -1,7 +1,7 @@
 import { arrayIsNotHave, is2DArrays, isArray } from "@/utils";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { InterceptorManager } from "./interceptorManager";
-import { SetupInterceptorArgs, XAxiosInterceptorOptions, Response, CreateAxiosOptions } from "./types";
+import { SetupInterceptorArgs, Response, CreateAxiosOptions } from "./types";
 
 type InterceptorType = "request" | "response";
 
@@ -24,15 +24,14 @@ export class Axios {
     let key: keyof SetupInterceptorArgs;
     for (key in interceptors) {
       if (is2DArrays(interceptors[key])) {
-        const interceptorArr = interceptors[key] as XAxiosInterceptorOptions<any>[];
+        const interceptorArr = interceptors[key];
         for (const interceptor of interceptorArr) {
-          const interceptorNum = this.instance.interceptors[key].use(...interceptor);
+          const [resolve, reject, options] = interceptor;
+          const interceptorNum = this.instance.interceptors[key].use(resolve as any, reject, options);
           this.saveInterceptor(key, interceptor, interceptorNum);
         }
       } else {
-        const interceptor = interceptors[key] as XAxiosInterceptorOptions<any>;
-        const interceptorNum = this.instance.interceptors[key].use(...interceptor);
-        this.saveInterceptor(key, interceptors[key], interceptorNum);
+        throw Error("interceptors 的数据结构错误");
       }
     }
   }

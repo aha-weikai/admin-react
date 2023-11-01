@@ -14,16 +14,14 @@ export interface CreateAxiosOptions extends AxiosRequestConfig {
   _customOptions?: HttpCustomOptions;
 }
 
-type XAxiosInterceptorOptions<V> = [((value: V) => V | Promise<V>) | null, ((error: any) => any) | null, AxiosInterceptorOptions?];
+type Resolve<T> = (value: T) => T | Promise<T>;
+type TransFormRes<T> = (value: T) => [boolean, any, T] | Promise<[boolean, any, T]>;
 
-type XAxiosResponseInterceptorOptions<V> = [
-  ((value: V) => V | Promise<V>) | ((value: V) => [boolean, any, V] | Promise<[boolean, any, V]>) | null,
-  ((error: any) => any) | null,
-  AxiosInterceptorOptions?
-];
+type XAxiosInterceptorManager<V, T = null> = [V | T | null, ((error: any) => any) | null, AxiosInterceptorOptions?];
+
 export interface SetupInterceptorArgs {
-  request: XAxiosInterceptorOptions<CreateAxiosOptions>[];
-  response: XAxiosResponseInterceptorOptions<AxiosResponse>[];
+  request: XAxiosInterceptorManager<Resolve<CreateAxiosOptions>>[];
+  response: XAxiosInterceptorManager<Resolve<AxiosResponse>, TransFormRes<AxiosResponse>>[];
 }
 
 export type Response<T> = Promise<[boolean, { message: any; data: T }, AxiosResponse<T>]>;

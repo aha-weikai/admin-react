@@ -133,3 +133,160 @@ export class Axios {
 
 // 大文件分片上传
 // [请求拦截器promise1，请求拦截器promise2，请求，响应拦截器promise1，响应拦截器promise2]
+/**
+ * Dispatch a request
+ *
+ * @param {String|Object} configOrUrl The config specific for this request (merged with this.defaults)
+ * @param {?Object} config
+ *
+ * @returns {Promise} The Promise to be fulfilled
+ */
+// request(configOrUrl, config) {
+//   /*eslint no-param-reassign:0*/
+//   // Allow for axios('example/url'[, config]) a la fetch API
+//   if (typeof configOrUrl === "string") {
+//     config = config || {};
+//     config.url = configOrUrl;
+//   } else {
+//     config = configOrUrl || {};
+//   }
+
+//   config = mergeConfig(this.defaults, config);
+
+//   const { transitional, paramsSerializer, headers } = config;
+
+//   if (transitional !== undefined) {
+//     validator.assertOptions(
+//       transitional,
+//       {
+//         silentJSONParsing: validators.transitional(validators.boolean),
+//         forcedJSONParsing: validators.transitional(validators.boolean),
+//         clarifyTimeoutError: validators.transitional(validators.boolean),
+//       },
+//       false
+//     );
+//   }
+
+//   if (paramsSerializer != null) {
+//     if (utils.isFunction(paramsSerializer)) {
+//       config.paramsSerializer = {
+//         serialize: paramsSerializer,
+//       };
+//     } else {
+//       validator.assertOptions(
+//         paramsSerializer,
+//         {
+//           encode: validators.function,
+//           serialize: validators.function,
+//         },
+//         true
+//       );
+//     }
+//   }
+
+//   // Set config.method
+//   config.method = (config.method || this.defaults.method || "get").toLowerCase();
+
+//   // Flatten headers
+//   let contextHeaders = headers && utils.merge(headers.common, headers[config.method]);
+
+//   headers &&
+//     utils.forEach(["delete", "get", "head", "post", "put", "patch", "common"], method => {
+//       delete headers[method];
+//     });
+
+//   config.headers = AxiosHeaders.concat(contextHeaders, headers);
+
+//   // filter out skipped interceptors
+//   // 筛选出需要跳过的拦截器
+//   const requestInterceptorChain = [];
+//   let synchronousRequestInterceptors = true;
+//   // 遍历请求拦截器
+//   // interceptors.request 数组 是 push requestInterceptor
+//   // requestInterceptorChain ，请求拦截器后use的先放到requestInterceptorChain
+//   // interceptors.request 先use的，后执行
+//   this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+//     if (typeof interceptor.runWhen === "function" && interceptor.runWhen(config) === false) {
+//       return;
+//     }
+
+//     // interceptor.synchronous
+//     // default false
+//     // 只有当所有的 synchronous = true
+//     // 请求拦截器才会同步执行
+//     synchronousRequestInterceptors = synchronousRequestInterceptors && interceptor.synchronous;
+
+//     // requestInterceptorChain 添加拦截器，先use的先unshift
+//     requestInterceptorChain.unshift(interceptor.fulfilled, interceptor.rejected);
+//   });
+
+//   // 响应拦截器数组
+//   const responseInterceptorChain = [];
+//   // 顺序没有变化
+//   this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+//     responseInterceptorChain.push(interceptor.fulfilled, interceptor.rejected);
+//   });
+
+//   let promise;
+//   let i = 0;
+//   let len;
+
+//   // 如果是异步
+//   if (!synchronousRequestInterceptors) {
+//     // 处理成一个请求链
+//     // [...请求拦截器,请求,undefined,...响应拦截器]
+//     const chain = [dispatchRequest.bind(this), undefined];
+//     chain.unshift.apply(chain, requestInterceptorChain);
+//     // [...requestInterceptorChain,chain]
+//     chain.push.apply(chain, responseInterceptorChain);
+//     // [...requestInterceptorChain,chain,...responseInterceptorChain]
+//     len = chain.length;
+
+//     promise = Promise.resolve(config);
+
+//     while (i < len) {
+//       // interceptor的 resolve 和 reject按照顺序排
+//       // 形成promise链
+//       promise = promise.then(chain[i++], chain[i++]);
+//     }
+
+//     // 返回 异步的promise
+//     return promise;
+//   }
+
+//   // 同步
+//   len = requestInterceptorChain.length;
+
+//   let newConfig = config;
+
+//   i = 0;
+
+//   while (i < len) {
+//     const onFulfilled = requestInterceptorChain[i++];
+//     const onRejected = requestInterceptorChain[i++];
+//     try {
+//       newConfig = onFulfilled(newConfig);
+//     } catch (error) {
+//       onRejected.call(this, error);
+//       break;
+//     }
+//   }
+
+//   try {
+//     promise = dispatchRequest.call(this, newConfig);
+//   } catch (error) {
+//     return Promise.reject(error);
+//   }
+
+//   i = 0;
+//   len = responseInterceptorChain.length;
+
+//   while (i < len) {
+//     // promise链
+//     // 请求，响应拦截器
+//     promise = promise.then(responseInterceptorChain[i++], responseInterceptorChain[i++]);
+//   }
+
+//   // 返回promise
+//   return promise;
+// }

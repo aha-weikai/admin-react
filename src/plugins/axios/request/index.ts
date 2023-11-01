@@ -37,7 +37,7 @@ export class Axios {
   }
 
   /**
-   * @description 存储interceptor的返回值 key
+   * ## 存储interceptor的返回值 key
    */
   saveInterceptor(type: InterceptorType, interceptor: any[], value: number) {
     if (type === "request") {
@@ -48,7 +48,7 @@ export class Axios {
   }
 
   /**
-   * @description 删除某个interceptor
+   * ## 删除某个interceptor
    */
   deleteInterceptor(type: InterceptorType, interceptor: any[]) {
     if (type === "request") {
@@ -59,7 +59,7 @@ export class Axios {
   }
 
   /**
-   * @description 清空 interceptor
+   * ## 清空 interceptor
    */
   clearInterceptor(type?: InterceptorType) {
     if (type === "request") {

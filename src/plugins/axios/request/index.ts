@@ -289,3 +289,14 @@ export class Axios {
 //   // 返回promise
 //   return promise;
 // }
+// axios
+
+//     this.handlers.push({
+//       fulfilled,
+//       rejected,
+//       synchronous: options ? options.synchronous : false,
+//       runWhen: options ? options.runWhen : null
+//     });
+
+// synchronous: default-false ，，默认异步执行拦截器
+// runWhen：defaut-null，，type: function

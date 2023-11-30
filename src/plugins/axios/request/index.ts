@@ -7,11 +7,9 @@ type InterceptorType = "request" | "response";
 
 export class Axios {
   private instance: AxiosInstance;
-  requestInterceptorManager: InterceptorManager;
-  responseInterceptorManager: InterceptorManager;
+  interceptorManager: InterceptorManager;
   constructor(defaultConfig: CreateAxiosOptions, interceptorOption?: SetupInterceptorArgs) {
-    this.requestInterceptorManager = new InterceptorManager();
-    this.responseInterceptorManager = new InterceptorManager();
+    this.interceptorManager = new InterceptorManager();
     this.instance = axios.create(defaultConfig);
     if (interceptorOption) this.setupInterceptors(interceptorOption);
   }
@@ -28,7 +26,7 @@ export class Axios {
         for (const interceptor of interceptorArr) {
           const [resolve, reject, options] = interceptor;
           const interceptorNum = this.instance.interceptors[key].use(resolve as any, reject, options);
-          this.saveInterceptor(key, interceptor, interceptorNum);
+          this.saveInterceptor(interceptor, interceptorNum);
         }
       } else {
         throw Error("interceptors 的数据结构错误");
@@ -39,22 +37,17 @@ export class Axios {
   /**
    * ## 存储interceptor的返回值 key
    */
-  saveInterceptor(type: InterceptorType, interceptor: any[], value: number) {
-    if (type === "request") {
-      this.requestInterceptorManager.set(interceptor, value);
-    } else {
-      this.responseInterceptorManager.set(interceptor, value);
-    }
+  private saveInterceptor(interceptor: any[], value: number) {
+    this.interceptorManager.set(interceptor, value);
   }
 
   /**
    * ## 删除某个interceptor
    */
   deleteInterceptor(type: InterceptorType, interceptor: any[]) {
-    if (type === "request") {
-      this.requestInterceptorManager.delete(interceptor);
-    } else {
-      this.responseInterceptorManager.delete(interceptor);
+    const id = this.interceptorManager.delete(interceptor);
+    if (typeof id !== "undefined") {
+      this.instance.interceptors[type].eject(id);
     }
   }
 
@@ -64,21 +57,20 @@ export class Axios {
   clearInterceptor(type?: InterceptorType) {
     if (type === "request") {
       this.instance.interceptors.request.clear();
-      this.requestInterceptorManager.clear();
     } else if (type === "response") {
       this.instance.interceptors.response.clear();
-      this.responseInterceptorManager.clear();
+      this.interceptorManager.clear();
     } else {
       this.clearInterceptor("request");
       this.clearInterceptor("response");
     }
   }
 
-  request<T, D = any>(config: CreateAxiosOptions): Response<T> {
+  request<T>(config: CreateAxiosOptions): Response<T> {
     return this.instance(config);
   }
 
-  get<T, D = any>(url: string, config?: CreateAxiosOptions): Response<T> {
+  get<T>(url: string, config?: CreateAxiosOptions): Response<T> {
     return this.instance.get(url, config);
   }
 
@@ -90,7 +82,7 @@ export class Axios {
     return this.instance.put(url, data, config);
   }
 
-  delete<T, D = any>(url: string, config?: CreateAxiosOptions): Response<T> {
+  delete<T>(url: string, config?: CreateAxiosOptions): Response<T> {
     return this.instance.delete(url, config);
   }
 }

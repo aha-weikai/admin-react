@@ -1,7 +1,7 @@
-import { arrayIsNotHave, is2DArrays, isArray } from "@/utils";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import { InterceptorManager } from "./interceptorManager";
-import { SetupInterceptorArgs, Response, CreateAxiosOptions } from "./types";
+import { is2DArrays } from "@/utils";
+import axios, { type AxiosInstance } from "axios";
+import { InterceptorManager, type StoreKey } from "./interceptorManager";
+import { CreateAxiosOptions, Response, SetupInterceptorArgs } from "./types";
 
 type InterceptorType = "request" | "response";
 
@@ -26,7 +26,7 @@ export class Axios {
         for (const interceptor of interceptorArr) {
           const [resolve, reject, options] = interceptor;
           const interceptorNum = this.instance.interceptors[key].use(resolve as any, reject, options);
-          this.saveInterceptor(interceptor, interceptorNum);
+          this.saveInterceptor(key, interceptor, interceptorNum);
         }
       } else {
         throw Error("interceptors 的数据结构错误");
@@ -37,17 +37,19 @@ export class Axios {
   /**
    * ## 存储interceptor的返回值 key
    */
-  private saveInterceptor(interceptor: any[], value: number) {
-    this.interceptorManager.set(interceptor, value);
+  private saveInterceptor(type: StoreKey, interceptor: any[], value: number) {
+    this.interceptorManager.set(type, interceptor, value);
   }
 
   /**
    * ## 删除某个interceptor
    */
   deleteInterceptor(type: InterceptorType, interceptor: any[]) {
-    const id = this.interceptorManager.delete(interceptor);
-    if (typeof id !== "undefined") {
+    const id = this.interceptorManager.delete(type, interceptor);
+    if (typeof id === "number") {
       this.instance.interceptors[type].eject(id);
+    } else {
+      throw Error("删除interceptor失败");
     }
   }
 
@@ -55,14 +57,14 @@ export class Axios {
    * ## 清空 interceptor
    */
   clearInterceptor(type?: InterceptorType) {
-    if (type === "request") {
-      this.instance.interceptors.request.clear();
-    } else if (type === "response") {
-      this.instance.interceptors.response.clear();
+    if (type) {
       this.interceptorManager.clear();
+      this.instance.interceptors[type].clear();
     } else {
-      this.clearInterceptor("request");
-      this.clearInterceptor("response");
+      const arr: StoreKey[] = ["request", "response"];
+      arr.forEach(item => {
+        this.clearInterceptor(item);
+      });
     }
   }
 

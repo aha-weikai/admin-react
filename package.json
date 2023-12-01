@@ -24,6 +24,7 @@
     "jsencrypt": "^3.3.2",
     "nprogress": "^0.2.0",
     "postcss": "^8.4.29",
+    "qs": "^6.11.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
@@ -33,6 +34,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@types/qs": "^6.9.10",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react-swc": "^3.3.2",

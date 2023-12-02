@@ -80,8 +80,6 @@ function isRepeatedReq(config: CreateAxiosOptions) {
   }
 }
 
-function clearTimeoutReq() {}
-
 function removeFinishedReq() {}
 
 // 白名单，有些请求可以重复请求

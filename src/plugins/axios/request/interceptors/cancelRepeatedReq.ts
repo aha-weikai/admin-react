@@ -67,18 +67,20 @@ function generateReqKey(config: GenerateReqKeyData) {
  * ## 判断请求
  * @param config
  */
-function isRepeatedReq(config: CreateAxiosOptions) {
-  const data = {
-    method: config.method,
-    url: config.url,
-    baseURL: config.baseURL,
-  };
-  const key = generateReqKey(data);
-  if (whiteList.has(key)) {
-    const needCancel = whiteList.get(key);
-    // if()
-  }
-}
+// function isRepeatedReq(config: CreateAxiosOptions) {
+//   const data = {
+//     method: config.method,
+//     url: config.url,
+//     baseURL: config.baseURL,
+//   };
+//   const key = generateReqKey(data);
+//   if (whiteList.has(key)) {
+//     const needCancel = whiteList.get(key);
+//     // if()
+//   }else{
+
+//   }
+// }
 
 function removeFinishedReq() {}
 
@@ -116,7 +118,7 @@ class WhiteList {
     return generateReqKey(simpleConfig);
   }
 }
-export const whiteList = new WhiteList();
+// export const whiteList = new WhiteList();
 
 // interface GenerateReqKeyData {
 //   url: string;

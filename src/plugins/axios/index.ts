@@ -7,6 +7,8 @@ import {
   dealWithResponseErr,
   dealWithResponseSuccess,
   dealWithToken,
+  removeRepeatedReqErr,
+  removeRepeatedReq,
 } from "./request/interceptors";
 
 export const http = new Axios(
@@ -24,6 +26,7 @@ export const http = new Axios(
       [dealWithRepeatedReq, null],
     ],
     response: [
+      [removeRepeatedReq, removeRepeatedReqErr],
       [null, dealWithExpiredToken],
       [dealWithResponseSuccess, dealWithResponseErr],
     ],

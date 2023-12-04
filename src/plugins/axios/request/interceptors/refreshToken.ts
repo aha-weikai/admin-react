@@ -36,10 +36,9 @@ let refreshTokenFlag = false;
  * @param err
  */
 export function dealWithExpiredToken(err: any) {
-  console.log("处理过期token");
   const { status, config } = err?.response || {};
-  console.log(status);
   if (status === 401) {
+    console.log("处理过期token", err);
     // promise的使用
     // return Promise
     // 然后，resolve值，才是真正的返回值
@@ -57,7 +56,7 @@ export function dealWithExpiredToken(err: any) {
     });
   } else {
     // 其他错误处理
-    return err;
+    return Promise.reject(err);
   }
 }
 

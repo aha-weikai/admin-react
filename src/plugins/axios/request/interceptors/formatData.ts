@@ -17,5 +17,5 @@ export function dealWithResponseErr(err: any): [true, any, any] {
  * @returns [false, response.data, response]
  */
 export function dealWithResponseSuccess(res: AxiosResponse): [false, any, AxiosResponse] {
-  return [false, res.data, res];
+  return [false, res?.data, res];
 }

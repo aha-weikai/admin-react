@@ -1,4 +1,4 @@
-export * from "./cancelRepeatedReq";
+export { dealWithRepeatedReq, removeRepeatedReqErr, removeRepeatedReq } from "./cancelRepeatedReq";
 export * from "./refreshToken";
 export * from "./formatData";
 

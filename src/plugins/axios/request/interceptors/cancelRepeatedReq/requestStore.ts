@@ -17,25 +17,35 @@ export class RequestStore {
    * @param config
    * @param controller
    */
-  set(config: GenerateReqKeyData, controller: AbortController) {
+  set(config: GenerateReqKeyData, controller: AbortController, cancelFn: (data: any) => void) {
     const isInWhiteList = this.getIsInWhiteList(config);
     if (isInWhiteList) {
       const isNeed = this.getIsNeedDealInWL(config);
       if (isNeed) {
         const key = this.whiteList.generateKey(config);
         if (this.store.has(key)) {
-          const preController = this.store.get(key)!;
-          preController.abort();
+          cancelFn(this.store.get(key)!);
         }
         this.store.set(key, controller);
       }
     } else {
       const key = generateReqKey(config);
       if (this.store.has(key)) {
-        controller.abort();
+        cancelFn(controller);
       } else {
         this.store.set(key, controller);
       }
+    }
+  }
+
+  get(config: GenerateReqKeyData) {
+    const isInWhiteList = this.getIsInWhiteList(config);
+    if (isInWhiteList) {
+      const key = this.whiteList.generateKey(config);
+      return this.store.get(key);
+    } else {
+      const key = generateReqKey(config);
+      return this.store.get(key);
     }
   }
 

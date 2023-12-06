@@ -9,6 +9,7 @@ import {
   dealWithToken,
   removeRepeatedReqErr,
   removeRepeatedReq,
+  cancelReqManual as cancelReqManualFn,
 } from "./request/interceptors";
 
 export const http = new Axios(
@@ -32,3 +33,5 @@ export const http = new Axios(
     ],
   }
 );
+
+export const cancelReqManual = cancelReqManualFn;

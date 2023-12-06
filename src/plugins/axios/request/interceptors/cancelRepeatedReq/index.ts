@@ -4,6 +4,7 @@ export * from "./utils";
 import { AxiosResponse } from "axios";
 import { CreateAxiosOptions } from "../../types";
 import { RequestStore } from "./requestStore";
+import { GenerateReqKeyData } from "./interface";
 
 const requestStore = new RequestStore();
 
@@ -17,9 +18,13 @@ export function dealWithRepeatedReq(config: CreateAxiosOptions) {
   if (config) {
     const controller = new AbortController();
     config.signal = controller.signal;
-    requestStore.set(config, controller);
+    requestStore.set(config, controller, cancelReq);
   }
   return config;
+}
+
+function cancelReq(controller: AbortController) {
+  controller.abort();
 }
 
 /**
@@ -35,12 +40,17 @@ export function removeRepeatedReq(res: AxiosResponse) {
  * ## 请求失败，将请求记录从store中移除
  */
 export function removeRepeatedReqErr(err: any) {
-  console.log(err);
-  const { config, name } = err?.response || {};
+  const { config } = err?.response || {};
   requestStore.delete(config);
-  if (name === "CanceledError") {
-    // 错误名称
-  }
-
   return Promise.reject(err);
+}
+
+/**
+ * ## 手动取消请求
+ */
+export function cancelReqManual(data: GenerateReqKeyData) {
+  const controller = requestStore.get(data);
+  if (controller) {
+    cancelReq(controller);
+  }
 }

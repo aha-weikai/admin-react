@@ -6,8 +6,8 @@ import "@/assets/css/index.css";
 
 import { setupPlugin } from "@/plugins";
 
-setupPlugin(App());
+const app = App();
 
-/* <React.StrictMode> */
+setupPlugin(app);
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(<RouterProvider router={router} />);
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(app);
